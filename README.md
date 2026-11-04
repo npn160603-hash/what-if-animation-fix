@@ -151,3 +151,62 @@ một episode tự truyền các tùy chỉnh màu nền/hạt phim/viền tối
 Muốn thêm phong cách vẽ thực sự như whiteboard, hoạt hình 2D phẳng hoặc anime cần phát triển bộ
 render/rig tương ứng. Bước này không phát sinh phí API.
 
+
+
+## Style Manager V2 — giao diện tiếng Việt, miễn phí và chạy tại máy
+
+V2 phát triển tiếp trên nhánh `feature/style-lock-v1`. Một trang web cục bộ cho phép chọn preset,
+tạo/sửa/xóa phong cách màu riêng, xem trước **nhân vật thật từ Remotion** và lưu Style Lock cho
+tất cả video, storyboard sau đó.
+
+### Chạy trên Windows (PowerShell)
+
+Yêu cầu: Node.js 18+ (khuyến nghị 22), Git và các công cụ mà bản gốc yêu cầu khi làm video.
+
+```powershell
+git clone https://github.com/npn160603-hash/what-if-animation-fix.git
+cd what-if-animation-fix
+git switch feature/style-manager-v2
+cd studio
+npm ci
+npm run styles
+```
+
+Mở **http://127.0.0.1:3431** trên cùng máy. Để tắt, nhấn Ctrl+C trong terminal.
+Nếu đã clone sẵn, dùng `git fetch origin` rồi `git switch feature/style-manager-v2`.
+Trên máy Windows, tường lửa không cần mở cổng ra Internet: server chỉ lắng nghe `127.0.0.1`.
+
+### Cách dùng
+
+1. Chọn preset có sẵn, sau đó **Lưu lựa chọn** để cập nhật `studio/style-lock.json`.
+2. Hoặc nhấn **+ Phong cách riêng**, chỉnh độ sáng, bão hòa, tương phản, màu nền,
+   đen trắng, sepia, hạt phim và viền tối.
+3. Nhấn **Tạo ảnh xem trước**. Công cụ sử dụng Remotion render ảnh `Cast` từ
+   chính nhân vật có trong engine, kể cả khi chưa lưu phong cách mới.
+4. Nhấn **Lưu phong cách riêng** để ghi vào `studio/style-profiles.json` và kích hoạt.
+   Có thể chọn lại, sửa hoặc xóa các phong cách đã lưu.
+5. Chạy Remotion Studio bằng lệnh `npm run studio` (ở terminal khác) để xem video và storyboard.
+
+**Chế độ khóa:** Khi bật, preset/profile đã chọn áp dụng cho mọi cảnh và storyboard.
+Khi tắt, engine quay về thông số theo từng tập của bản gốc. Nút xem trước khi tắt
+khóa hiển thị nhân vật với cấu hình Cast mặc định.
+
+**Giới hạn:** V2 chỉ đổi màu và hiệu ứng hậu kỳ, chưa phải phong cách nét vẽ mới. 
+Render ảnh xem trước cần các package Remotion trong `npm ci` và Chromium (Remotion có thể
+cần cài lần đầu). Không cần API AI/ElevenLabs để **quản lý phong cách**, nhưng luồng tạo
+giọng đọc và hiệu ứng âm thanh của dự án gốc vẫn có thể cần ElevenLabs.
+
+**Dữ liệu:** Hồ sơ và lựa chọn lưu vào các file JSON trên máy, không được upload ra
+dịch vụ nào bởi Style Manager. Đây là file Git có thể commit; đừng đặt thông tin riêng
+tư trong tên profile nếu định đẩy repository Public.
+
+### Kiểm tra
+
+```powershell
+cd studio
+npm run typecheck
+npm run test:styles
+node --check style-manager/app.js
+node --check scripts/style-manager.mjs
+```
+
