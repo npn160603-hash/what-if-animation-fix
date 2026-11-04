@@ -83,7 +83,7 @@ const fxAt = (tl: Timeline, f: number) => {
 };
 
 /** Vignette and a fine grain that changes on twos, to take the vector edge off (the genre's finish). */
-const Grade: React.FC<{ f: number; grain: boolean; vignette: boolean }> = ({ f, grain, vignette }) => (
+export const Grade: React.FC<{ f: number; grain: boolean; vignette: boolean }> = ({ f, grain, vignette }) => (
   <svg width={1920} height={1080} viewBox="0 0 1920 1080" style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
     <defs>
       <radialGradient id="epVig" cx="50%" cy="50%" r="75%">

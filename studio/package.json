@@ -5,7 +5,9 @@
   "description": "What If animation studio: one topic line in, a finished 15-25 s episode out. Every frame is SVG drawn in code (Remotion).",
   "scripts": {
     "studio": "remotion studio src/index.ts --port 3430",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "styles": "node scripts/style-manager.mjs",
+    "test:styles": "node --test tests/*.test.mjs"
   },
   "dependencies": {
     "@remotion/bundler": "4.0.530",

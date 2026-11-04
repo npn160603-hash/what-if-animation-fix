@@ -1,0 +1,36 @@
+name: Style Manager V2 checks
+on:
+  pull_request:
+    paths:
+      - 'studio/**'
+      - '.github/workflows/style-manager-checks.yml'
+  push:
+    branches:
+      - 'feature/style-manager-v2'
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    defaults:
+      run:
+        working-directory: studio
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: studio/package-lock.json
+      - name: Install dependencies
+        run: npm ci
+      - name: Validate TypeScript
+        run: npm run typecheck
+      - name: Test style settings
+        run: npm run test:styles
+      - name: Parse browser JS and server JS
+        run: |
+          node --check style-manager/app.js
+          node --check scripts/style-manager.mjs
+      - name: Smoke test real Remotion cast preview
+        run: node scripts/style-manager-smoke.mjs

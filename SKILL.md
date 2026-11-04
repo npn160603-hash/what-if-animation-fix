@@ -189,3 +189,16 @@ pace, credits). Watch the final file once through with sound. Hand over `out/<sl
 | `public/<slug>/` | voice.wav, sfx.wav, music.wav |
 | `out/<slug>/` | board stills, storyboard.jpg, shotlist.md, motion grids, renders, costs.json, report.json |
 | `library/sfx/` | Every generated sound clip, shared by all episodes |
+
+
+## Style Manager V2 (development fork)
+
+Read `studio/style-lock.json` and `studio/style-profiles.json` before planning each new
+episode. Use the selected profile or preset for all shots, storyboards and final render.
+Do not change the selection mid-episode. In the studio folder, `npm run styles` launches a
+Vietnamese-only local manager at `http://127.0.0.1:3431` to edit these files and preview
+the existing Remotion `Cast` composition. No cloud API is used by this editor.
+Profiles change **color grading**, not character geometry or line art; keep the original
+shared rig and character identities. `locked: false` deliberately restores per-episode
+styles. If an edited style is requested, save the profile before producing an episode.
+
