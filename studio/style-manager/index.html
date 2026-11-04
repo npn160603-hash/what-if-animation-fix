@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="dark"><title>Style Manager – What If Animation</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="top"><div class="mark">W<span>✦</span></div>
+<div><strong>What If · Style Manager</strong><small>Quản lý phong cách hoạt hình trên máy của bạn</small></div>
+<div class="tag">V2 · LOCAL</div></header>
+<main>
+<section class="panel settings">
+  <p class="eyebrow">PHONG CÁCH</p>
+  <h1>Thiết kế hình ảnh nhất quán.</h1>
+  <p class="muted">Chọn màu sắc và hiệu ứng dùng chung cho video, storyboard và ảnh xem trước. Không cần tài khoản hay API trả phí.</p>
+  <label for="selection">Phong cách đang chọn</label>
+  <select id="selection" aria-label="Chọn phong cách"></select>
+  <label class="toggle"><input id="locked" type="checkbox" checked><span>Khóa phong cách cho mọi cảnh</span></label>
+  <p class="hint">Tắt khóa sẽ dùng lại cấu hình cũ của từng tập; hiệu ứng tùy chỉnh không áp dụng khi xuất video.</p>
+  <div class="actions">
+    <button id="save-active" class="primary">Lưu lựa chọn</button>
+    <button id="new-profile">+ Phong cách riêng</button>
+  </div>
+  <div id="editor" class="editor" hidden>
+    <div class="edit-title"><h2 id="editor-heading">Phong cách riêng</h2><span class="sub">Chỉnh trong giới hạn an toàn</span></div>
+    <label for="name">Tên phong cách</label><input id="name" maxlength="60" placeholder="Ví dụ: Kênh của tôi">
+    <label for="background">Màu nền render</label><input id="background" type="color">
+    <div id="sliders"></div>
+    <label class="toggle"><input id="grain" type="checkbox"><span>Hạt phim</span></label>
+    <label class="toggle"><input id="vignette" type="checkbox"><span>Viền tối</span></label>
+    <div class="actions"><button id="save-profile" class="primary">Lưu phong cách riêng</button><button id="delete-profile" class="danger" hidden>Xóa</button></div>
+  </div>
+  <p id="status" role="status" aria-live="polite"></p>
+</section>
+<section class="panel preview">
+  <div class="preview-heading"><div><p class="eyebrow">XEM TRƯỚC</p><h2>Nhân vật gốc · Cast</h2></div>
+  <button id="preview-btn" class="primary">Tạo ảnh xem trước</button></div>
+  <div class="visual" id="visual"><div id="empty-preview"><div class="big-icon">◈</div><p>Ảnh xem trước được render từ Remotion bằng đúng nhân vật SVG gốc.</p><small>Nhấn “Tạo ảnh xem trước” sau khi chọn hoặc chỉnh phong cách.</small></div><img id="preview-image" alt="Các nhân vật hoạt hình được render bằng Remotion" hidden></div>
+  <p class="hint">Các preset hiện tại chỉ thay đổi màu sắc, độ tương phản và hiệu ứng. Chưa hỗ trợ thay đổi nét vẽ hoặc hình dáng nhân vật.</p>
+  <div class="info"><b>Chạy hoàn toàn tại máy</b><span>Node.js + Remotion · http://127.0.0.1:3431 · Không tải dữ liệu lên dịch vụ ngoài.</span></div>
+</section>
+</main>
+<script type="module" src="/app.js"></script>
+</body>
+</html>
