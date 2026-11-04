@@ -32,3 +32,5 @@ jobs:
         run: |
           node --check style-manager/app.js
           node --check scripts/style-manager.mjs
+      - name: Smoke test real Remotion cast preview
+        run: node scripts/style-manager-smoke.mjs
