@@ -1,6 +1,7 @@
 import React from 'react';
 import { AbsoluteFill } from 'remotion';
-import { Hero, basePose, Pose, LOOKS, CastName, KitDefs, SetDefs, Study, FONT } from './engine';
+import { Hero, basePose, Pose, LOOKS, CastName, KitDefs, SetDefs, Study, FONT, Grade, getRenderStyle } from './engine';
+import type { RenderStyle } from './engine/styles';
 
 // The cast sheet: every costume on the one rig, front and three-quarter, over a soft set so contrast is judged in
 // place, plus a row of acting poses. Render it after adding or changing a look:
@@ -14,8 +15,9 @@ const Label: React.FC<{ x: number; y: number; text: string }> = ({ x, y, text })
 const P = (o: Partial<Pose>): Pose => ({ ...basePose, ...o });
 const NAMES: Record<CastName, string> = { pip: 'PIP A', pipHood: 'PIP B (HERO)', pipInk: 'PIP C', mo: 'MO, FRIEND', sis: 'SISTER', mom: 'MUM', suit: 'THE SUIT' };
 
-export const CastSheet: React.FC = () => {
+export const CastSheet: React.FC<{ previewStyle?: RenderStyle }> = ({ previewStyle }) => {
   const cast = Object.keys(LOOKS) as CastName[];
+  const style = previewStyle ?? getRenderStyle({background:'#14101C',grain:true,vignette:true});
   const row1 = 430;
   const row2 = 900;
   const poses: { name: string; p: Partial<Pose> }[] = [
@@ -26,7 +28,8 @@ export const CastSheet: React.FC = () => {
     { name: 'shock', p: { armL: { a: 60, b: 40 }, armR: { a: 60, b: 40 }, expr: 'shock', yaw: -0.3, look: -0.6 } },
   ];
   return (
-    <AbsoluteFill style={{ backgroundColor: '#14101C' }}>
+    <AbsoluteFill style={{ backgroundColor: style.background }}>
+      <AbsoluteFill style={{ filter: style.filter }}>
       <svg width={1920} height={1080} viewBox="0 0 1920 1080">
         <KitDefs />
         <SetDefs />
@@ -51,6 +54,8 @@ export const CastSheet: React.FC = () => {
           </g>
         ))}
       </svg>
+      <Grade f={0} grain={style.grain} vignette={style.vignette} />
+      </AbsoluteFill>
     </AbsoluteFill>
   );
 };
