@@ -3,6 +3,7 @@ import { AbsoluteFill, Audio, staticFile, useCurrentFrame } from 'remotion';
 import { clamp, lerp } from './anim';
 import { KitDefs } from './kit';
 import { SetDefs } from './light';
+import { getRenderStyle } from './styles';
 
 // The episode engine. An episode is a set of shots plus a timeline (written by scripts/plan.py from the voice's word
 // timings). Each shot is a pure function of its own clock t, so the edit can cut back to a shot, hold it, or play it
@@ -121,18 +122,21 @@ export const Episode: React.FC<EpisodeProps> = ({ timeline: tl, shots, looks = {
   const jitter = def?.jitter && lv > 0 ? Math.sin(f * 13.7) * def.jitter * lv : 0;
   const { flash, x, y } = fxAt(tl, f);
   const A = tl.audio;
+  const style = getRenderStyle({ background: bg, grain, vignette });
   return (
-    <AbsoluteFill style={{ backgroundColor: bg }}>
+    <AbsoluteFill style={{ backgroundColor: style.background }}>
+      <AbsoluteFill style={{ filter: style.filter }}>
       <AbsoluteFill style={{ transform: `translate(${x + jitter}px, ${y}px) scale(${x || y ? 1.02 : 1})`, filter: def?.grade && lv > 0 ? def.grade(lv) : undefined }}>
         <ShotFrame>{Shot ? <Shot t={clockAt(seg, f)} len={info?.len ?? seg.b - seg.a} f={f} /> : null}</ShotFrame>
       </AbsoluteFill>
-      <Grade f={f} grain={grain} vignette={vignette} />
+      <Grade f={f} grain={style.grain} vignette={style.vignette} />
       {def?.Overlay && run ? (
         <svg width={1920} height={1080} viewBox="0 0 1920 1080" style={{ position: 'absolute', inset: 0, opacity: lv }}>
           <def.Overlay f={f} lv={lv} p={clamp((f - run.a) / (run.b - run.a))} n={run.n} />
         </svg>
       ) : null}
       {flash ? <AbsoluteFill style={{ backgroundColor: flash.color, opacity: flash.o }} /> : null}
+      </AbsoluteFill>
       {A.voice ? <Audio src={staticFile(A.voice)} volume={A.voiceVol ?? 1} /> : null}
       {A.sfx ? <Audio src={staticFile(A.sfx)} volume={A.sfxVol ?? 1} /> : null}
       {A.music ? <Audio src={staticFile(A.music)} volume={A.musicVol ?? 1} /> : null}
@@ -145,10 +149,13 @@ export const Board: React.FC<{ timeline: Timeline; shots: ShotMap; grain?: boole
   const f = useCurrentFrame();
   const info = tl.shots[Math.min(f, tl.shots.length - 1)];
   const Shot = shots[info.id];
+  const style = getRenderStyle({ background: bg, grain, vignette });
   return (
-    <AbsoluteFill style={{ backgroundColor: bg }}>
+    <AbsoluteFill style={{ backgroundColor: style.background }}>
+      <AbsoluteFill style={{ filter: style.filter }}>
       <ShotFrame>{Shot ? <Shot t={info.key} len={info.len} f={info.first + info.key} /> : null}</ShotFrame>
-      <Grade f={info.key} grain={grain} vignette={vignette} />
+      <Grade f={info.key} grain={style.grain} vignette={style.vignette} />
+      </AbsoluteFill>
     </AbsoluteFill>
   );
 };

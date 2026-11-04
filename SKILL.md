@@ -51,6 +51,21 @@ brand face, put a display font in `public/fonts/` and set `titleFont` in `src/st
 face, Bricolage Grotesque, and the UI faces load from Google Fonts at render time). To update an existing studio to
 a newer engine, copy `<skill>/studio/src/engine` over its `src/engine`.
 
+
+## Style Lock V1 (developer fork)
+
+Before generating **any** new episode or storyboard, read `studio/style-lock.json`. Its `preset` is the
+single style selection for the entire studio; `locked: true` applies that selection consistently to
+both the animation and its storyboard. Available preset IDs are listed in
+`studio/src/engine/styles.ts`. The default, `cinematic-dusk`, preserves the original look.
+
+- Do not pick a new preset for individual shots or silently change `style-lock.json` while making an episode.
+- Keep the same SVG cast rigs, costume design, and scene palette across shots; no random AI-generated character redraws.
+- The additional V1 presets are **color-grading / grain / vignette presets**, not alternate illustration engines.
+  A true whiteboard, anime or flat-vector drawing style requires further rendering and character work.
+- When reviewing storyboard stills, verify that the selected grade, character continuity and palette are coherent.
+- These presets are rendered locally in Remotion, with no extra API or paid service.
+
 ## The pipeline
 
 Work through the steps in order. Each ends on something you look at before the next.
